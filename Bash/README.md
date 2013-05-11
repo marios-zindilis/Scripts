@@ -12,6 +12,11 @@ ping_c_class.sh
 Accepts an IP as parameter, pings all hosts in the Class C subnet in
 which that IP belongs and prints a report.
 
+re_ip.sh
+--------
+A function that checks if the parameter passed is an IP Address, using
+a regular expression. Exits with code 0 if it is, 1 if it is not.
+
 validate_ip.sh
 --------------
 A function that checks if the parameter passed is a valid IP Address,
