@@ -1,0 +1,41 @@
+#!/bin/sh
+
+if [ ! -f /usr/bin/convert ]; then
+  zenity --error \
+         --title="Σφάλμα εξάρτησης" \
+         --text="Δεν βρέθηκε το πρόγραμμα convert, το οποίο είναι απαραίτητο για την εκτέλεση. Παρακαλώ εγκαταστήστε το και δοκιμάστε ξανά.\n\nΤο πρόγραμμα convert εγκαθίσταται με το πακέτο ImageMagick."
+  exit
+fi
+
+FOLDER=$(zenity --entry \
+                --title="Φάκελος προορισμού" \
+                --text="Εισάγετε το όνομα του φακέλου μικρογραφιών:" \
+                --entry-text "thumbs");
+
+SCALE=$(zenity --scale \
+               --value=50 \
+               --title="Ποσοστό σμίκρυνσης" \
+               --text="Επιλέξτε το ποσοστό σμίκρυνσης:");
+
+TOTAL=$(ls -l *.jpg *.jpeg *.png | wc -l);
+COUNT=1;
+PERCENTAGE=0;
+
+if [ ! -d $FOLDER ]; then
+  mkdir ./$FOLDER
+fi
+
+(
+for i in *.jpg *.jpeg *.png; do
+  echo "# Σμίκρυνση σε εξέλιξη… ($COUNT από $TOTAL)";
+  convert -resize ${SCALE}% "$i" "$FOLDER/$i";
+  COUNT=$((COUNT+1));
+  PERCENTAGE=$(expr $COUNT '*' 100 / $TOTAL);
+  echo $PERCENTAGE;
+done
+) | zenity --progress \
+              --title="Πρόοδος σμίκρυνσης" \
+              --text="Σμίκρυνση σε εξέλιξη…" \
+              --auto-close \
+              --auto-kill \
+              --percentage="0"

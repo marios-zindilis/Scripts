@@ -22,3 +22,8 @@ validate_ip.sh
 A function that checks if the parameter passed is a valid IP Address,
 meant to be used for user input validation. For a version that only
 returns True/False, see is_ip.sh.
+
+## ResizeAll ##
+
+A Nautilus plugin to resize all pictures in a directory.
+
